@@ -2,6 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
+const contactsRouter = require("./routes/contactsRouter");
+const usersRouter = require("./routes/usersRouter");
 
 const app = express();
 
@@ -9,8 +11,8 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-app.use("/users");
-app.use("/contacts");
+app.use("/users", usersRouter);
+app.use("/contacts", contactsRouter);
 
 app.use((_, res) => {
   res.status(404).json({
