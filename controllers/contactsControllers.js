@@ -1,4 +1,4 @@
-const { HttpError } = require("../helpers/index");
+const { HttpError, controllerWrapper } = require("../helpers/index");
 const {
   getAll,
   create,
@@ -64,8 +64,8 @@ const updateContactById = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllContacts,
-  postContact,
-  deleteContactById,
-  updateContactById,
+  getAllContacts: controllerWrapper(getAllContacts),
+  postContact: controllerWrapper(postContact),
+  deleteContactById: controllerWrapper(deleteContactById),
+  updateContactById: controllerWrapper(updateContactById),
 };
