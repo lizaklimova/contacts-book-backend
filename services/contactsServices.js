@@ -15,9 +15,15 @@ const create = async (data) => {
 
   return await Contact.create(data);
 };
-// const remove = async (data) => await Contact.create(data);
+
+const remove = async (contactId) => await Contact.findByIdAndDelete(contactId);
+
+const update = async (contactId, data) =>
+  await Contact.findByIdAndUpdate(contactId, data, { new: true });
 
 module.exports = {
   getAll,
   create,
+  remove,
+  update,
 };

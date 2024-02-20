@@ -5,6 +5,9 @@ const validateBody = (schema) => {
     const bodyFieldsLength = Object.keys(req.body).length;
 
     if (!bodyFieldsLength) {
+      if (req.method === "PATCH") {
+        next(HttpError(400, "Body must include at least one field"));
+      }
       next(HttpError(400, "Body must include name and number"));
     }
 

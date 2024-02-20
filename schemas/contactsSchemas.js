@@ -9,6 +9,12 @@ const createContactSchema = Joi.object({
   }),
 });
 
+const updateContactSchema = Joi.object({
+  name: Joi.string(),
+  number: Joi.string(),
+});
+
 module.exports = {
   createContactSchema,
+  updateContactSchema,
 };

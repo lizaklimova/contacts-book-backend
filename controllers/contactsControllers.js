@@ -1,5 +1,10 @@
-const HttpError = require("../helpers/HttpError");
-const { getAll, create } = require("../services/contactsServices");
+const { HttpError } = require("../helpers/index");
+const {
+  getAll,
+  create,
+  remove,
+  update,
+} = require("../services/contactsServices");
 
 const getAllContacts = async (req, res, next) => {
   try {
@@ -26,6 +31,17 @@ const postContact = async (req, res, next) => {
 
 const deleteContactById = async (req, res, next) => {
   try {
+    const { contactId } = req.params;
+
+    const result = await remove(contactId);
+
+    if (!result) {
+      throw HttpError(400, "Contact with such id doesn't exist");
+    }
+
+    res.json({
+      message: "Contact was deleted successfully",
+    });
   } catch (error) {
     next(error);
   }
@@ -33,6 +49,15 @@ const deleteContactById = async (req, res, next) => {
 
 const updateContactById = async (req, res, next) => {
   try {
+    const { contactId } = req.params;
+
+    const result = await update(contactId, req.body);
+
+    if (!result) {
+      throw HttpError(400, "Contact with such id doesn't exist");
+    }
+
+    res.json(result);
   } catch (error) {
     next(error);
   }

@@ -1,6 +1,7 @@
 const express = require("express");
-const validateBody = require("../helpers/validateBody");
-const { createContactSchema } = require("../schemas/contactsSchemas");
+const { validateBody } = require("../helpers/index");
+const { contactSchemas } = require("../schemas/index");
+const { isValidId } = require("../middlewares/index");
 const {
   getAllContacts,
   postContact,
@@ -10,16 +11,17 @@ const {
 
 const contactsRouter = express.Router();
 
-contactsRouter.get("/", validateBody(createContactSchema), getAllContacts);
-contactsRouter.post("/", validateBody(createContactSchema), postContact);
-contactsRouter.delete(
-  "/:contactId",
-  validateBody(createContactSchema),
-  deleteContactById
+contactsRouter.get("/", getAllContacts);
+contactsRouter.post(
+  "/",
+  validateBody(contactSchemas.createContactSchema),
+  postContact
 );
+contactsRouter.delete("/:contactId", isValidId, deleteContactById);
 contactsRouter.patch(
   "/:contactId",
-  validateBody(createContactSchema),
+  isValidId,
+  validateBody(contactSchemas.updateContactSchema),
   updateContactById
 );
 
