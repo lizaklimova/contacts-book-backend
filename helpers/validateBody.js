@@ -1,7 +1,13 @@
-import HttpError from "./HttpError.js";
+const HttpError = require("./HttpError.js");
 
 const validateBody = (schema) => {
   const func = (req, _, next) => {
+    const bodyFieldsLength = Object.keys(req.body).length;
+
+    if (!bodyFieldsLength) {
+      next(HttpError(400, "Body must include name and number"));
+    }
+
     const { error } = schema.validate(req.body);
     if (error) {
       next(HttpError(400, error.message));
@@ -12,4 +18,4 @@ const validateBody = (schema) => {
   return func;
 };
 
-export default validateBody;
+module.exports = validateBody;

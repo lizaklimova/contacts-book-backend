@@ -1,4 +1,4 @@
-import { Schema, Types, model } from "mongoose";
+const { Schema, Types, model } = require("mongoose");
 
 const contactsSchema = new Schema(
   {
@@ -18,4 +18,6 @@ const contactsSchema = new Schema(
   { versionKey: false }
 );
 
-export const Contact = model("contact", contactsSchema);
+const Contact = model("contact", contactsSchema);
+
+module.exports = Contact;

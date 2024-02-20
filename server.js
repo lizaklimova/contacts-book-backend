@@ -1,7 +1,7 @@
 const connectMongo = require("./db/mongoConnect");
 const app = require("./app");
 
-const { PORT = 8000 } = process.env;
+const { PORT = 5000 } = process.env;
 
 const startSever = async () => {
   try {
