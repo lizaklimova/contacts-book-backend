@@ -8,7 +8,8 @@ const validateBody = (schema) => {
       if (req.method === "PATCH") {
         next(HttpError(400, "Body must include at least one field"));
       }
-      next(HttpError(400, "Body must include name and number"));
+
+      next(HttpError(400, "Body can't be empty"));
     }
 
     const { error } = schema.validate(req.body);
