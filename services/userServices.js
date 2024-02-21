@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../db/models/usersModel");
+const User = require("../db/models/userModel");
 
 const { SECRET_KEY } = process.env;
 
@@ -20,8 +20,11 @@ const register = async (credentials) => {
 
   return newUser;
 };
+
 const login = async (req, res) => {};
+
 const logout = async (req, res) => {};
+
 const getCurrent = async (req, res) => {};
 
 module.exports = {

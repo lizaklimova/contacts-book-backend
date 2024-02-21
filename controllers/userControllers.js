@@ -26,8 +26,18 @@ const registerCtrl = async (req, res) => {
   });
 };
 
-const loginCtrl = async (req, res) => {};
+const loginCtrl = async (req, res) => {
+  const { email, password } = req.body;
+
+  const doesUserExists = await checkIfUserExists(email);
+
+  if (doesUserExists) {
+    throw HttpError(409, "User with such email already in use");
+  }
+};
+
 const logoutCtrl = async (req, res) => {};
+
 const getCurrentCtrl = async (req, res) => {};
 
 module.exports = {

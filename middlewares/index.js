@@ -1,6 +1,7 @@
 const isValidId = require("./isValidId");
-const userMiddlewares = require("./userMiddlewares");
+const authorize = require("./authorize");
 
 module.exports = {
   isValidId,
+  authorize,
 };

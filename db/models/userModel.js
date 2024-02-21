@@ -19,9 +19,6 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
-    avatarURL: {
-      type: String,
-    },
   },
   { versionKey: false }
 );
@@ -34,6 +31,6 @@ userSchema.methods.comparePassword = async function (userPassword) {
   return await bcryptjs.compare(userPassword, this.password);
 };
 
-const User = model("users", userSchema);
+const User = model("user", userSchema);
 
 module.exports = User;
