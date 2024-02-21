@@ -1,7 +1,7 @@
 const express = require("express");
 const { validateBody } = require("../helpers/index");
 const { contactSchemas } = require("../schemas/index");
-const { isValidId, authorize } = require("../middlewares/index");
+const { isValidId, authenticate } = require("../middlewares/index");
 const {
   getAllContacts,
   postContact,
@@ -11,17 +11,22 @@ const {
 
 const contactsRouter = express.Router();
 
-contactsRouter.get("/", authorize, getAllContacts);
+contactsRouter.get("/", authenticate, getAllContacts);
 contactsRouter.post(
   "/",
-  authorize,
+  authenticate,
   validateBody(contactSchemas.createContactSchema),
   postContact
 );
-contactsRouter.delete("/:contactId", authorize, isValidId, deleteContactById);
+contactsRouter.delete(
+  "/:contactId",
+  authenticate,
+  isValidId,
+  deleteContactById
+);
 contactsRouter.patch(
   "/:contactId",
-  authorize,
+  authenticate,
   isValidId,
   validateBody(contactSchemas.updateContactSchema),
   updateContactById

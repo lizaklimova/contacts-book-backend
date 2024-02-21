@@ -1,4 +1,5 @@
 const express = require("express");
+const { authenticate } = require("../middlewares/index");
 const { validateBody } = require("../helpers/index");
 const { userSchemas } = require("../schemas/index");
 const {

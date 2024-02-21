@@ -21,16 +21,26 @@ const register = async (credentials) => {
   return newUser;
 };
 
-const login = async (req, res) => {};
+const login = async (userId) => {
+  {
+    const token = jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: "24h" });
 
-const logout = async (req, res) => {};
+    const newUser = await User.findByIdAndUpdate(
+      userId,
+      { token },
+      { new: true }
+    );
 
-const getCurrent = async (req, res) => {};
+    return newUser;
+  }
+};
+
+const logout = async (userId) =>
+  await User.findByIdAndUpdate(userId, { token: "" });
 
 module.exports = {
   checkIfUserExists,
   register,
   login,
   logout,
-  getCurrent,
 };

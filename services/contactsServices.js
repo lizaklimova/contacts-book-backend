@@ -1,8 +1,11 @@
 const Contact = require("../db/models/contactModel");
 
-const getAll = async () => await Contact.find({});
-const create = async (data) => {
-  const doesNumberExist = await Contact.findOne({ number: data.number });
+const getAll = async (userId) => await Contact.find({ owner: userId });
+const create = async (data, userId) => {
+  const doesNumberExist = await Contact.findOne({
+    number: data.number,
+    owner: userId,
+  });
 
   if (doesNumberExist) {
     return {
@@ -13,13 +16,16 @@ const create = async (data) => {
     };
   }
 
-  return await Contact.create(data);
+  return await Contact.create({ ...data, owner: userId });
 };
 
-const remove = async (contactId) => await Contact.findByIdAndDelete(contactId);
+const remove = async (contactId, userId) =>
+  await Contact.findOneAndDelete({ _id: contactId, owner: userId });
 
-const update = async (contactId, data) =>
-  await Contact.findByIdAndUpdate(contactId, data, { new: true });
+const update = async (contactId, data, userId) =>
+  await Contact.findOneAndUpdate({ _id: contactId, owner: userId }, data, {
+    new: true,
+  });
 
 module.exports = {
   getAll,

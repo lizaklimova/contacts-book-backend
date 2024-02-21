@@ -6,13 +6,13 @@ const {
   update,
 } = require("../services/contactsServices");
 
-const getAllContacts = async (_, res) => {
-  const result = await getAll();
+const getAllContacts = async (req, res) => {
+  const result = await getAll(req.user._id);
   res.json(result);
 };
 
 const postContact = async (req, res) => {
-  const result = await create(req.body);
+  const result = await create(req.body, req.user._id);
 
   if (result.error) {
     throw HttpError(result.error.status, result.error.message);
@@ -24,7 +24,7 @@ const postContact = async (req, res) => {
 const deleteContactById = async (req, res) => {
   const { contactId } = req.params;
 
-  const result = await remove(contactId);
+  const result = await remove(contactId, req.user._id);
 
   if (!result) {
     throw HttpError(400, "Contact with such id doesn't exist");
@@ -38,7 +38,7 @@ const deleteContactById = async (req, res) => {
 const updateContactById = async (req, res) => {
   const { contactId } = req.params;
 
-  const result = await update(contactId, req.body);
+  const result = await update(contactId, req.body, req.user._id);
 
   if (!result) {
     throw HttpError(400, "Contact with such id doesn't exist");

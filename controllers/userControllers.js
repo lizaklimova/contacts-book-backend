@@ -4,7 +4,6 @@ const {
   register,
   login,
   logout,
-  getCurrent,
 } = require("../services/userServices");
 
 const registerCtrl = async (req, res) => {
@@ -29,16 +28,42 @@ const registerCtrl = async (req, res) => {
 const loginCtrl = async (req, res) => {
   const { email, password } = req.body;
 
-  const doesUserExists = await checkIfUserExists(email);
+  const user = await checkIfUserExists(email);
 
-  if (doesUserExists) {
+  if (!user) {
     throw HttpError(409, "User with such email already in use");
   }
+
+  const isValidPassword = await user.comparePassword(password);
+
+  if (!isValidPassword) {
+    throw HttpError(400, "Invalid email or password");
+  }
+
+  const newUser = await login(user._id);
+
+  res.json({
+    token: newUser.token,
+    user: {
+      name: newUser.name,
+      email,
+    },
+  });
 };
 
-const logoutCtrl = async (req, res) => {};
+const logoutCtrl = async (req, res) => {
+  await logout(req.user._id);
 
-const getCurrentCtrl = async (req, res) => {};
+  res.json({
+    message: "Logout was successful",
+  });
+};
+
+const getCurrentCtrl = async (req, res) => {
+  const { name, email } = req.user;
+
+  res.json({ name, email });
+};
 
 module.exports = {
   registerCtrl: controllerWrapper(registerCtrl),
