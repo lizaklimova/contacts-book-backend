@@ -17,7 +17,7 @@ usersRouter.post(
   registerCtrl
 );
 usersRouter.post("/login", validateBody(userSchemas.loginSchema), loginCtrl);
-usersRouter.post("/logout", logoutCtrl);
-usersRouter.get("/current", getCurrentCtrl);
+usersRouter.post("/logout", authenticate, logoutCtrl);
+usersRouter.get("/current", authenticate, getCurrentCtrl);
 
 module.exports = usersRouter;
