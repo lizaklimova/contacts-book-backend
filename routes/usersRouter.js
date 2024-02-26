@@ -1,5 +1,5 @@
 const express = require("express");
-const { authenticate } = require("../middlewares/index");
+const { authenticate, upload } = require("../middlewares/index");
 const { validateBody } = require("../helpers/index");
 const { userSchemas } = require("../schemas/index");
 const {
@@ -7,6 +7,7 @@ const {
   loginCtrl,
   logoutCtrl,
   getCurrentCtrl,
+  updateAvatarCtrl,
 } = require("../controllers/userControllers");
 
 const usersRouter = express.Router();
@@ -19,5 +20,11 @@ usersRouter.post(
 usersRouter.post("/login", validateBody(userSchemas.loginSchema), loginCtrl);
 usersRouter.post("/logout", authenticate, logoutCtrl);
 usersRouter.get("/current", authenticate, getCurrentCtrl);
+usersRouter.patch(
+  "/updateAvatar",
+  authenticate,
+  upload.single("avatar"),
+  updateAvatarCtrl
+);
 
 module.exports = usersRouter;
