@@ -7,7 +7,10 @@ const {
   login,
   logout,
   updateAvatar,
+  updateUserName,
 } = require("../services/userServices");
+
+const { SERVER_URL } = process.env;
 
 const registerCtrl = async (req, res) => {
   const { name, email } = req.body;
@@ -24,6 +27,7 @@ const registerCtrl = async (req, res) => {
     user: {
       name,
       email,
+      avatarURL: result.avatarURL,
     },
   });
 };
@@ -64,9 +68,9 @@ const logoutCtrl = async (req, res) => {
 };
 
 const getCurrentCtrl = async (req, res) => {
-  const { name, email } = req.user;
+  const { name, email, avatarURL } = req.user;
 
-  res.json({ name, email });
+  res.json({ name, email, avatarURL });
 };
 
 const updateAvatarCtrl = async (req, res) => {
@@ -85,11 +89,20 @@ const updateAvatarCtrl = async (req, res) => {
 
   await fs.rename(tempPath, resultUpload);
 
-  const avatarURL = path.join("avatars", fileName);
+  const avatarURL = `${SERVER_URL}/${path.join("avatars", fileName)}`;
 
   await updateAvatar(_id, avatarURL);
 
   res.json({ avatarURL });
+};
+
+const updateNameCtrl = async (req, res) => {
+  const { name } = req.body;
+  const { _id } = req.user;
+
+  const updatedUser = await updateUserName(_id, name);
+
+  res.json(updatedUser);
 };
 
 module.exports = {
@@ -98,4 +111,5 @@ module.exports = {
   logoutCtrl: controllerWrapper(logoutCtrl),
   getCurrentCtrl: controllerWrapper(getCurrentCtrl),
   updateAvatarCtrl: controllerWrapper(updateAvatarCtrl),
+  updateNameCtrl: controllerWrapper(updateNameCtrl),
 };

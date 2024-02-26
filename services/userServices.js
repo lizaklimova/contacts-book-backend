@@ -12,7 +12,7 @@ const register = async (userData) => {
   await user.save();
 
   const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "24h" });
-  const avatarURL = gravatar.url(userData.email);
+  const avatarURL = `https:${gravatar.url(userData.email)}?d=mp`;
 
   const newUser = await User.findByIdAndUpdate(
     user._id,
@@ -41,7 +41,10 @@ const logout = async (userId) =>
   await User.findByIdAndUpdate(userId, { token: "" });
 
 const updateAvatar = async (userId, avatarURL) =>
-  User.findByIdAndUpdate(userId, { avatarURL });
+  User.findByIdAndUpdate(userId, { avatarURL }, { new: true });
+
+const updateUserName = async (userId, newName) =>
+  User.findByIdAndUpdate(userId, { name: newName }, { new: true });
 
 module.exports = {
   checkIfUserExists,
@@ -49,4 +52,5 @@ module.exports = {
   login,
   logout,
   updateAvatar,
+  updateUserName,
 };

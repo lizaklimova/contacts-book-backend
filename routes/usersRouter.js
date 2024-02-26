@@ -8,6 +8,7 @@ const {
   logoutCtrl,
   getCurrentCtrl,
   updateAvatarCtrl,
+  updateNameCtrl,
 } = require("../controllers/userControllers");
 
 const usersRouter = express.Router();
@@ -26,5 +27,6 @@ usersRouter.patch(
   upload.single("avatar"),
   updateAvatarCtrl
 );
+usersRouter.patch("/updateName", authenticate, updateNameCtrl);
 
 module.exports = usersRouter;
